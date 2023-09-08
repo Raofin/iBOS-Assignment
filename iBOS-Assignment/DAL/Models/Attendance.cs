@@ -11,15 +11,16 @@ namespace iBOS_Assignment.DAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "EmployeeId is required.")]
         public long EmployeeId { get; set; }
 
         [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "AttendanceDate is required.")]
         [Column(TypeName = "date")]
-        [DefaultValue(typeof(DateTime), "GETDATE()")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Attendance Date")]
         public DateTime AttendanceDate { get; set; } = DateTime.Now; // Default value is the current date.
 
         [DefaultValue(false)]
