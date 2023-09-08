@@ -78,6 +78,19 @@ namespace iBOS_Assignment.API.Controllers
             return Ok(employeesWithNoAbsentRecords);
         }
 
+        // GET: api/Employees/GetHierarchy/{employeeId}
+        [HttpGet("GetHierarchy/{employeeId}")]
+        public IActionResult GetHierarchy(long employeeId)
+        {
+            List<EmployeeDto> hierarchy = _employeeService.GetHierarchyByEmployeeId(employeeId);
+
+            if (hierarchy == null || hierarchy.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(hierarchy);
+        }
 
         // GET: api/Employees
         [HttpGet]

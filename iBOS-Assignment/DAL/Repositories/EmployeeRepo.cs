@@ -32,6 +32,26 @@ namespace iBOS_Assignment.DAL.Repositories
                 .ToList();
         }
 
+        public List<Employee> GetHierarchyByEmployeeId(long employeeId)
+        {
+            List<Employee> hierarchy = new List<Employee>();
+            HashSet<long> visitedSupervisorIds = new HashSet<long>(); // Keep track of visited supervisor IDs
+            Employee currentEmployee = _context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId);
+
+            while (currentEmployee != null && !visitedSupervisorIds.Contains(currentEmployee.SupervisorId))
+            {
+                hierarchy.Add(currentEmployee);
+                visitedSupervisorIds.Add(currentEmployee.SupervisorId); // Mark supervisor ID as visited
+                currentEmployee = _context.Employees.FirstOrDefault(e => e.EmployeeId == currentEmployee.SupervisorId);
+            }
+
+            hierarchy.Reverse(); // Reverse the hierarchy to start from the root supervisor
+
+            return hierarchy;
+        }
+
+
+
         public List<Employee> Get()
         {
             return _context.Employees.ToList();

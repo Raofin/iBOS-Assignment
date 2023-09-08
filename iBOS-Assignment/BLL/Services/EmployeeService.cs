@@ -44,6 +44,13 @@ namespace iBOS_Assignment.BLL.Services
             return _mapper.Map<List<EmployeeDto>>(employees);
         }
 
+        public List<EmployeeDto> GetHierarchyByEmployeeId(long employeeId)
+        {
+            var hierarchy = _employeeRepo.GetHierarchyByEmployeeId(employeeId);
+
+            // Map the Employee entities to EmployeeDto objects if necessary
+            return _mapper.Map<List<EmployeeDto>>(hierarchy);
+        }
 
         public List<EmployeeDto> Get()
         {

@@ -21,7 +21,7 @@ namespace iBOS_Assignment.DAL.Models
         [Required]
         public int EmployeeSalary { get; set; }
 
-        public long? SupervisorId { get; set; }
+        public long SupervisorId { get; set; }
 
         // Navigation property to access Employee's Attendances
         public ICollection<Attendance> Attendances { get; set; }

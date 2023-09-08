@@ -38,7 +38,6 @@ namespace iBOS_Assignment.DAL.Repositories
         public bool Delete(long id)
         {
             var attendanceToDelete = _context.EmployeeAttendances.Find(id);
-
             if (attendanceToDelete == null)
                 return false;
 
@@ -54,7 +53,7 @@ namespace iBOS_Assignment.DAL.Repositories
 
             var existingAttendance = _context.EmployeeAttendances.Find(obj.Id);
 
-            if (existingAttendance == null) 
+            if (existingAttendance == null)
                 return false;
 
             existingAttendance.EmployeeId = obj.EmployeeId;
