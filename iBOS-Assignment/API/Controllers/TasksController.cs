@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using iBOS_Assignment.BLL.Dtos;
+﻿using iBOS_Assignment.BLL.Dtos;
 using iBOS_Assignment.BLL.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using iBOS_Assignment.DAL;
-using iBOS_Assignment.DAL.Models;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace iBOS_Assignment.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    [Route("api/tasks")]
+    public class TasksController : ControllerBase
     {
         private readonly EmployeeService _employeeService;
+        private readonly AttendanceService _attendanceService;
 
-        public EmployeesController(EmployeeService employeeService)
+        public TasksController(EmployeeService employeeService, AttendanceService attendanceService)
         {
+            _attendanceService = attendanceService;
             _employeeService = employeeService;
         }
 
         // PUT: api/Employees/UpdateNameAndCode/{employeeId}
-        [HttpPut("UpdateNameAndCode/{id}")]
-        public IActionResult UpdateNameAndCode(long id, [FromBody] EmpNameAndCodeDto employee)
+        [HttpPut("UpdateNameAndCode/{employeeId}")]
+        public IActionResult UpdateNameAndCode(long employeeId, [FromBody] EmpNameAndCodeDto employee)
         {
-            EmployeeDto existingEmployee = _employeeService.Get(id);
+            EmployeeDto existingEmployee = _employeeService.Get(employeeId);
 
             if (existingEmployee == null)
             {
-                return NotFound();
+                return NotFound("Employee not found");
             }
 
             // Update the EmployeeName and EmployeeCode properties
@@ -47,8 +44,9 @@ namespace iBOS_Assignment.API.Controllers
 
             var updatedEmployee = _employeeService.Update(existingEmployee);
 
-            return Ok(updatedEmployee);
+            return Ok("Employee updated successfully");
         }
+
 
         // GET: api/Employees/GetThirdHighestSalaryEmployee
         [HttpGet("GetThirdHighestSalaryEmployee")]
@@ -65,7 +63,7 @@ namespace iBOS_Assignment.API.Controllers
         }
 
         // GET: api/Employees/GetEmployeesWithNoAbsentRecords
-        [HttpGet("GetEmployeesWithNoAbsentRecords")]
+        [HttpGet("GetEmployeesMaxToMinSalaryWithNoAbsent")]
         public IActionResult GetEmployeesWithNoAbsentRecords()
         {
             List<EmployeeDto> employeesWithNoAbsentRecords = _employeeService.GetEmployeesWithNoAbsentRecords();
@@ -76,6 +74,15 @@ namespace iBOS_Assignment.API.Controllers
             }
 
             return Ok(employeesWithNoAbsentRecords);
+        }
+
+        // GET: api/Attendance/MonthlyReport?year=2023&month=9
+        [HttpGet("MonthlyAttendanceReport")]
+        public IActionResult GetMonthlyAttendanceReport(int year, int month)
+        {
+            var reportData = _attendanceService.CalculateMonthlyReport(year, month);
+
+            return Ok(reportData);
         }
 
         // GET: api/Employees/GetHierarchy/{employeeId}
