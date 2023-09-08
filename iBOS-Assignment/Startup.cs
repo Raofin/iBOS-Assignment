@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using iBOS_Assignment.BLL.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace iBOS_Assignment
@@ -36,9 +37,9 @@ namespace iBOS_Assignment
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<AttendanceRepo>();
 
-            services.AddScoped<EmployeeService>();
-            services.AddScoped<AttendanceService>();
-            services.AddScoped<AuthService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             // Configure Swagger for API documentation.
             services.AddSwaggerGen(option => {

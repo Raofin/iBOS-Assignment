@@ -1,7 +1,8 @@
-﻿using iBOS_Assignment.BLL.Dtos;
+﻿using iBOS_Assignment.BLL.Interfaces;
 using iBOS_Assignment.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using iBOS_Assignment.API.Dtos;
 
 namespace iBOS_Assignment.API.Controllers
 {
@@ -10,10 +11,10 @@ namespace iBOS_Assignment.API.Controllers
     [Route("api/tasks")]
     public class TasksController : ControllerBase
     {
-        private readonly EmployeeService _employeeService;
-        private readonly AttendanceService _attendanceService;
+        private readonly IEmployeeService _employeeService;
+        private readonly IAttendanceService _attendanceService;
 
-        public TasksController(EmployeeService employeeService, AttendanceService attendanceService)
+        public TasksController(IEmployeeService employeeService, IAttendanceService attendanceService)
         {
             _attendanceService = attendanceService;
             _employeeService = employeeService;

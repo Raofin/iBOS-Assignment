@@ -1,14 +1,15 @@
 ﻿using System;
-using iBOS_Assignment.BLL.Dtos;
 using System.Collections.Generic;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
 using AutoMapper;
 using System.Linq;
+using iBOS_Assignment.BLL.Interfaces;
+using iBOS_Assignment.API.Dtos;
 
 namespace iBOS_Assignment.BLL.Services
 {
-    public class AttendanceService
+    public class AttendanceService : IAttendanceService
     {
         private readonly AttendanceRepo _attendanceRepo;
 

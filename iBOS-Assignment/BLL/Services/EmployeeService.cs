@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using iBOS_Assignment.BLL.Dtos;
+using iBOS_Assignment.API.Dtos;
+using iBOS_Assignment.BLL.Interfaces;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
 
 namespace iBOS_Assignment.BLL.Services
 {
-    public class EmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly EmployeeRepo _employeeRepo;
 

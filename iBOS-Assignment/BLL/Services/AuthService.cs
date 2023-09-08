@@ -3,11 +3,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System;
+using iBOS_Assignment.BLL.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace iBOS_Assignment.BLL.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly IConfiguration _config;
 

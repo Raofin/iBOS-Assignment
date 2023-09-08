@@ -30,7 +30,7 @@ namespace iBOS_Assignment.DAL.Models
         public int EmployeeSalary { get; set; }
 
         [Range(1, long.MaxValue, ErrorMessage = "SupervisorId must be a positive value.")]
-        public long? SupervisorId { get; set; } // Made nullable to allow employees without supervisors.
+        public long SupervisorId { get; set; } // Made nullable to allow employees without supervisors.
 
         // Navigation property to access Employee's Attendances
         public ICollection<Attendance> Attendances { get; set; }
