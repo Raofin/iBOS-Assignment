@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace iBOS_Assignment.BLL.Dtos
+{
+    public class EmployeeDto
+    {
+        public long EmployeeId { get; set; }
+
+        public string EmployeeName { get; set; }
+
+        public string EmployeeCode { get; set; }
+
+        public int EmployeeSalary { get; set; }
+
+        public long? SupervisorId { get; set; }
+    }
+}
