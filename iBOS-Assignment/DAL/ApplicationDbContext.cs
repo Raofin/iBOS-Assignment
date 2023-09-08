@@ -16,6 +16,10 @@ namespace iBOS_Assignment.DAL
         {
             modelBuilder.SeedEmployee();
             modelBuilder.SeedAttendance();
+
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.EmployeeCode)
+                .IsUnique();
         }
     }
 }
