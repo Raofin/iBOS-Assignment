@@ -36,6 +36,15 @@ namespace iBOS_Assignment.BLL.Services
             return _mapper.Map<EmployeeDto>(employee);
         }
 
+        public List<EmployeeDto> GetEmployeesWithNoAbsentRecords()
+        {
+            var employees = _employeeRepo.GetEmployeesWithNoAbsentRecords();
+
+            // Map the Employee entities to EmployeeDto objects if necessary
+            return _mapper.Map<List<EmployeeDto>>(employees);
+        }
+
+
         public List<EmployeeDto> Get()
         {
             var data = _employeeRepo.Get();

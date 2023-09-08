@@ -24,6 +24,13 @@ namespace iBOS_Assignment.DAL.Repositories
                 .FirstOrDefault();
         }
 
+        public List<Employee> GetEmployeesWithNoAbsentRecords()
+        {
+            return _context.Employees
+                .Where(e => !_context.EmployeeAttendances.Any(a => a.EmployeeId == e.EmployeeId && a.IsAbsent))
+                .OrderByDescending(e => e.EmployeeSalary)
+                .ToList();
+        }
 
         public List<Employee> Get()
         {

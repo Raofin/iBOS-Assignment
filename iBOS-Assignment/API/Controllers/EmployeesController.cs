@@ -64,6 +64,21 @@ namespace iBOS_Assignment.API.Controllers
             return Ok(thirdHighestSalaryEmployee);
         }
 
+        // GET: api/Employees/GetEmployeesWithNoAbsentRecords
+        [HttpGet("GetEmployeesWithNoAbsentRecords")]
+        public IActionResult GetEmployeesWithNoAbsentRecords()
+        {
+            List<EmployeeDto> employeesWithNoAbsentRecords = _employeeService.GetEmployeesWithNoAbsentRecords();
+
+            if (employeesWithNoAbsentRecords == null || employeesWithNoAbsentRecords.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(employeesWithNoAbsentRecords);
+        }
+
+
         // GET: api/Employees
         [HttpGet]
         public IActionResult Get()
