@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using iBOS_Assignment.DAL.Interfaces;
 using iBOS_Assignment.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace iBOS_Assignment.DAL.Repositories
 {
@@ -13,6 +14,21 @@ namespace iBOS_Assignment.DAL.Repositories
         public AttendanceRepo(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public List<Attendance> GetMonthlyAttendanceReport(int year, int month)
+        {
+            // Implement logic to query attendance records for the specified year and month
+            // You'll need to filter and aggregate attendance records to generate the report
+            // This implementation will depend on your data model and business requirements
+
+            // Example: Query attendance data for the specified month and year
+            var reportData = _context.EmployeeAttendances
+                .Include(a => a.Employee)
+                .Where(a => a.AttendanceDate.Year == year && a.AttendanceDate.Month == month)
+                .ToList();
+
+            return reportData;
         }
 
         public List<Attendance> Get()
