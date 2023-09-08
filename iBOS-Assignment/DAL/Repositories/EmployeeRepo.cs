@@ -15,6 +15,16 @@ namespace iBOS_Assignment.DAL.Repositories
             _context = context;
         }
 
+        public Employee GetEmployeeWithThirdHighestSalary()
+        {
+            return _context.Employees
+                .OrderByDescending(e => e.EmployeeSalary)
+                .Skip(2) // Skip the first two employees (0-based index)
+                .Take(1) // Take one employee, which will be the 3rd highest salary
+                .FirstOrDefault();
+        }
+
+
         public List<Employee> Get()
         {
             return _context.Employees.ToList();

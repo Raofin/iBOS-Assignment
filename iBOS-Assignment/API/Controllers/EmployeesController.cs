@@ -22,6 +22,47 @@ namespace iBOS_Assignment.API.Controllers
         {
             _employeeService = employeeService;
         }
+        
+        // PUT: api/Employees/UpdateNameAndCode/5
+        [HttpPut("UpdateNameAndCode/{id}")]
+        public IActionResult UpdateNameAndCode(long id, [FromBody] EmpNameAndCodeDto employee)
+        {
+            EmployeeDto existingEmployee = _employeeService.Get(id);
+
+            if (existingEmployee == null)
+            {
+                return NotFound();
+            }
+
+            // Update only the EmployeeName and EmployeeCode properties
+            if (!string.IsNullOrEmpty(employee.EmployeeName))
+            {
+                existingEmployee.EmployeeName = employee.EmployeeName;
+            }
+
+            if (!string.IsNullOrEmpty(employee.EmployeeCode))
+            {
+                existingEmployee.EmployeeCode = employee.EmployeeCode;
+            }
+
+            var updatedEmployee = _employeeService.Update(existingEmployee);
+
+            return Ok(updatedEmployee);
+        }
+
+        // GET: api/Employees/GetThirdHighestSalaryEmployee
+        [HttpGet("GetThirdHighestSalaryEmployee")]
+        public IActionResult GetThirdHighestSalaryEmployee()
+        {
+            EmployeeDto thirdHighestSalaryEmployee = _employeeService.GetThirdHighestSalaryEmployee();
+
+            if (thirdHighestSalaryEmployee == null)
+            {
+                return NotFound("No employee with the 3rd highest salary found.");
+            }
+
+            return Ok(thirdHighestSalaryEmployee);
+        }
 
         // GET: api/Employees
         [HttpGet]

@@ -5,6 +5,7 @@ using iBOS_Assignment.BLL.Dtos;
 using iBOS_Assignment.DAL;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace iBOS_Assignment.BLL.Services
 {
@@ -22,6 +23,18 @@ namespace iBOS_Assignment.BLL.Services
             cfg.CreateMap<EmployeeDto, Employee>();
             cfg.CreateMap<Employee, EmployeeDto>();
         }));
+
+        public EmployeeDto GetThirdHighestSalaryEmployee()
+        {
+            var employee = _employeeRepo.GetEmployeeWithThirdHighestSalary();
+
+            if (employee == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<EmployeeDto>(employee);
+        }
 
         public List<EmployeeDto> Get()
         {
