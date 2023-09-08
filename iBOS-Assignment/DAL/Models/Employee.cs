@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iBOS_Assignment.DAL.Models
@@ -21,5 +22,8 @@ namespace iBOS_Assignment.DAL.Models
         public int EmployeeSalary { get; set; }
 
         public long? SupervisorId { get; set; }
+
+        // Navigation property to access Employee's Attendances
+        public ICollection<Attendance> Attendances { get; set; }
     }
 }
