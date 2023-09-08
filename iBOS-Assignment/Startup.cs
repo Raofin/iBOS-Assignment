@@ -1,4 +1,6 @@
+using iBOS_Assignment.BLL.Services;
 using iBOS_Assignment.DAL;
+using iBOS_Assignment.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,12 @@ namespace iBOS_Assignment
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("iBOS")));
+
+            services.AddScoped<EmployeeRepo>();
+            services.AddScoped<AttendanceRepo>();
+
+            services.AddScoped<EmployeeService>();
+            services.AddScoped<AttendanceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
