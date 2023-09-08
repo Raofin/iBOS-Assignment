@@ -2,31 +2,82 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iBOS_Assignment.DAL;
 
-namespace iBOS_Assignment.DAL.Migrations
+namespace iBOS_Assignment.DAL.SQLite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230908011640_init")]
-    partial class init
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.32")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.32");
+
+            modelBuilder.Entity("iBOS_Assignment.DAL.Models.Attendance", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AttendanceDate")
+                        .HasColumnType("date");
+
+                    b.Property<long>("EmployeeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAbsent")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsOffDay")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("EmployeeAttendances");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            AttendanceDate = new DateTime(2023, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 502030L,
+                            IsAbsent = false,
+                            IsOffDay = false,
+                            IsPresent = true
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            AttendanceDate = new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 502030L,
+                            IsAbsent = true,
+                            IsOffDay = false,
+                            IsPresent = false
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AttendanceDate = new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 502031L,
+                            IsAbsent = false,
+                            IsOffDay = false,
+                            IsPresent = true
+                        });
+                });
 
             modelBuilder.Entity("iBOS_Assignment.DAL.Models.Employee", b =>
                 {
                     b.Property<long>("EmployeeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EmployeeCode")
                         .IsRequired()
@@ -37,12 +88,15 @@ namespace iBOS_Assignment.DAL.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("EmployeeSalary")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<long?>("SupervisorId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("SupervisorId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("EmployeeCode")
+                        .IsUnique();
 
                     b.ToTable("Employees");
 
@@ -105,68 +159,10 @@ namespace iBOS_Assignment.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("iBOS_Assignment.DAL.Models.EmployeeAttendance", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AttendanceDate")
-                        .HasColumnType("date");
-
-                    b.Property<long>("EmployeeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsAbsent")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOffDay")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPresent")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("EmployeeAttendances");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            AttendanceDate = new DateTime(2023, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeId = 502030L,
-                            IsAbsent = false,
-                            IsOffDay = false,
-                            IsPresent = true
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            AttendanceDate = new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeId = 502030L,
-                            IsAbsent = true,
-                            IsOffDay = false,
-                            IsPresent = false
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            AttendanceDate = new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeId = 502031L,
-                            IsAbsent = false,
-                            IsOffDay = false,
-                            IsPresent = true
-                        });
-                });
-
-            modelBuilder.Entity("iBOS_Assignment.DAL.Models.EmployeeAttendance", b =>
+            modelBuilder.Entity("iBOS_Assignment.DAL.Models.Attendance", b =>
                 {
                     b.HasOne("iBOS_Assignment.DAL.Models.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("Attendances")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

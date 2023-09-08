@@ -2,46 +2,42 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iBOS_Assignment.DAL;
 
-namespace iBOS_Assignment.DAL.Migrations
+namespace iBOS_Assignment.DAL.SQLite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230908164218_update-emp-table")]
-    partial class updateemptable
+    [Migration("20230908193513_initSQLite")]
+    partial class initSQLite
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.32")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.32");
 
             modelBuilder.Entity("iBOS_Assignment.DAL.Models.Attendance", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("AttendanceDate")
                         .HasColumnType("date");
 
                     b.Property<long>("EmployeeId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsAbsent")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsOffDay")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsPresent")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -83,8 +79,7 @@ namespace iBOS_Assignment.DAL.Migrations
                 {
                     b.Property<long>("EmployeeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EmployeeCode")
                         .IsRequired()
@@ -95,10 +90,10 @@ namespace iBOS_Assignment.DAL.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("EmployeeSalary")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<long?>("SupervisorId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("SupervisorId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("EmployeeId");
 
