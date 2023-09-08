@@ -10,7 +10,7 @@ namespace iBOS_Assignment.DAL
 
         public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<EmployeeAttendance> EmployeeAttendances { get; set; }
+        public DbSet<Attendance> EmployeeAttendances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

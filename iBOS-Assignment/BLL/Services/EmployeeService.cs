@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
+using iBOS_Assignment.BLL.Dtos;
+using iBOS_Assignment.DAL;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
 
@@ -13,47 +17,74 @@ namespace iBOS_Assignment.BLL.Services
             _employeeRepo = employeeRepo;
         }
 
-        public List<Employee> Get()
+        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg =>
         {
-            return _employeeRepo.Get();
+            cfg.CreateMap<EmployeeDto, Employee>();
+            cfg.CreateMap<Employee, EmployeeDto>();
+        }));
+
+        public List<EmployeeDto> Get()
+        {
+            var data = _employeeRepo.Get();
+            return _mapper.Map<List<EmployeeDto>>(data);
         }
 
-        public Employee Get(long id)
+        public EmployeeDto Get(long id)
         {
-            return _employeeRepo.Get(id);
+            var data = _employeeRepo.Get(id);
+            return _mapper.Map<EmployeeDto>(data);
         }
 
-        public Employee Update(Employee employee)
+        public bool Update(EmployeeDto employee)
         {
             var existingEmployee = _employeeRepo.Get(employee.EmployeeId);
+
             if (existingEmployee == null)
             {
-                return null;
+                throw new Exception("Employee not found");
             }
 
-            _employeeRepo.Update(existingEmployee);
+            // Check if the new EmployeeCode is different from the existing one
+            if (existingEmployee.EmployeeCode != employee.EmployeeCode)
+            {
+                // If different, check if the new EmployeeCode is unique
+                if (_employeeRepo.EmployeeCodeExists(employee.EmployeeCode))
+                {
+                    throw new Exception("EmployeeCode must be unique");
+                }
+            }
 
-            return existingEmployee;
+            // Update other properties
+            _mapper.Map(employee, existingEmployee);
+
+            return _employeeRepo.Update(existingEmployee);
         }
 
-        public Employee Delete(long id)
+        public bool Delete(long id)
         {
             var existingEmployee = _employeeRepo.Get(id);
+
             if (existingEmployee == null)
             {
-                return null;
+                throw new Exception("Employee not found");
             }
 
-            _employeeRepo.Delete(id);
-
-            return existingEmployee;
+            return _employeeRepo.Delete(id);
         }
 
-        public bool Create(Employee employee)
+        public bool Create(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
+
             if (string.IsNullOrEmpty(employee.EmployeeName) || string.IsNullOrEmpty(employee.EmployeeCode))
             {
-                return false;
+                throw new Exception("EmployeeName and EmployeeCode are required");
+            }
+
+            // Check if the EmployeeCode is unique
+            if (_employeeRepo.EmployeeCodeExists(employee.EmployeeCode))
+            {
+                throw new Exception("EmployeeCode must be unique");
             }
 
             var createdEmployee = _employeeRepo.Add(employee);
@@ -66,5 +97,4 @@ namespace iBOS_Assignment.BLL.Services
             return _employeeRepo.Get(id) != null;
         }
     }
-
 }

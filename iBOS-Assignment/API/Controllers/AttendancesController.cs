@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iBOS_Assignment.BLL.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,17 +25,17 @@ namespace iBOS_Assignment.API.Controllers
 
         // GET: api/Attendance
         [HttpGet]
-        public IActionResult GetAllAttendances()
+        public IActionResult Get()
         {
-            var attendances = _attendanceService.GetAllAttendances();
+            var attendances = _attendanceService.Get();
             return Ok(attendances);
         }
 
         // GET: api/Attendance/5
         [HttpGet("{id}")]
-        public IActionResult GetAttendanceById(long id)
+        public IActionResult Get(long id)
         {
-            var attendance = _attendanceService.GetAttendanceById(id);
+            var attendance = _attendanceService.Get(id);
             if (attendance == null)
             {
                 return NotFound();
@@ -44,57 +45,43 @@ namespace iBOS_Assignment.API.Controllers
 
         // POST: api/Attendance
         [HttpPost]
-        public IActionResult AddAttendance([FromBody] EmployeeAttendance employeeAttendance)
+        public IActionResult AddAttendance([FromBody] AttendanceDto attendance)
         {
-            if (employeeAttendance == null)
+            if (attendance == null)
             {
                 return BadRequest("Invalid attendance data");
             }
 
-            _attendanceService.AddAttendance(employeeAttendance);
-
-            return CreatedAtAction(nameof(GetAttendanceById), new { id = employeeAttendance.Id }, employeeAttendance);
+            return _attendanceService.AddAttendance(attendance)
+                ? (IActionResult)Ok("Attendance created successfully")
+                : BadRequest("Attendance  creation failed");
         }
 
         // PUT: api/Attendance/5
         [HttpPut("{id}")]
-        public IActionResult UpdateAttendance(long id, [FromBody] EmployeeAttendance employeeAttendance)
+        public IActionResult UpdateAttendance(long id, [FromBody] AttendanceDto attendance)
         {
-            if (employeeAttendance == null || id != employeeAttendance.Id)
-            {
-                return BadRequest("Invalid attendance data");
-            }
+            var existingAttendance = _attendanceService.Get(id);
 
-            var existingAttendance = _attendanceService.GetAttendanceById(id);
             if (existingAttendance == null)
             {
                 return NotFound();
             }
 
-            _attendanceService.UpdateAttendance(employeeAttendance);
+            _attendanceService.UpdateAttendance(attendance);
 
-            return Ok(employeeAttendance);
+            return Ok(attendance);
         }
 
         // DELETE: api/Attendance/5
         [HttpDelete("{id}")]
         public IActionResult DeleteAttendance(long id)
         {
-            var existingAttendance = _attendanceService.GetAttendanceById(id);
-            if (existingAttendance == null)
-            {
-                return NotFound();
-            }
+            var existingAttendance = _attendanceService.Get(id);
 
-            var deleted = _attendanceService.DeleteAttendance(id);
-            if (deleted)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return BadRequest("Attendance deletion failed");
-            }
+            return existingAttendance == null 
+                ? (IActionResult)NotFound() 
+                : Ok(_attendanceService.DeleteAttendance(id));
         }
     }
 }

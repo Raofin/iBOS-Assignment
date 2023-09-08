@@ -64,5 +64,11 @@ namespace iBOS_Assignment.DAL.Repositories
             _context.SaveChanges();
             return true;
         }
+
+        public bool EmployeeCodeExists(string employeeCode)
+        {
+            // Check if any employee with the given EmployeeCode exists
+            return _context.Employees.Any(e => e.EmployeeCode == employeeCode);
+        }
     }
 }

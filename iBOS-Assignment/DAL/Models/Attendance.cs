@@ -5,7 +5,7 @@ using System;
 
 namespace iBOS_Assignment.DAL.Models
 {
-    public class EmployeeAttendance
+    public class Attendance
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

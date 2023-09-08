@@ -18,7 +18,7 @@ namespace iBOS_Assignment.DAL
             return new EmployeeRepo(_context);
         }
 
-        public static IRepo<EmployeeAttendance, long, bool> AttendanceDataAccess()
+        public static IRepo<Attendance, long, bool> AttendanceDataAccess()
         {
             return new AttendanceRepo(_context);
         }

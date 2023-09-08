@@ -1,7 +1,9 @@
-﻿using iBOS_Assignment.BLL.Dtos;
+﻿using System;
+using iBOS_Assignment.BLL.Dtos;
 using System.Collections.Generic;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
+using AutoMapper;
 
 namespace iBOS_Assignment.BLL.Services
 {
@@ -14,29 +16,53 @@ namespace iBOS_Assignment.BLL.Services
             _attendanceRepo = attendanceRepo;
         }
 
-        public List<EmployeeAttendance> GetAllAttendances()
+        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg => {
+            cfg.CreateMap<AttendanceDto, Attendance>();
+            cfg.CreateMap<Attendance, AttendanceDto>();
+        }));
+
+        public List<AttendanceDto> Get()
         {
-            return _attendanceRepo.Get();
+            var data = _attendanceRepo.Get();
+            return _mapper.Map<List<AttendanceDto>>(data);
         }
 
-        public EmployeeAttendance GetAttendanceById(long id)
+        public AttendanceDto Get(long id)
         {
-            return _attendanceRepo.Get(id);
+            var data = _attendanceRepo.Get(id);
+
+            return _mapper.Map<AttendanceDto>(data);
         }
 
-        public void AddAttendance(EmployeeAttendance employeeAttendance)
+        public bool AddAttendance(AttendanceDto attendance)
         {
-            _attendanceRepo.Add(employeeAttendance);
+            var employeeAttendance = _mapper.Map<Attendance>(attendance);
+            return _attendanceRepo.Add(employeeAttendance);
         }
 
-        public void UpdateAttendance(EmployeeAttendance employeeAttendance)
+        public bool UpdateAttendance(AttendanceDto attendance)
         {
-            _attendanceRepo.Update(employeeAttendance);
+            var existingAttendance = _attendanceRepo.Get(attendance.Id);
+
+            if (existingAttendance == null)
+            {
+                throw new Exception("Attendance not found");
+            }
+
+            var data = _mapper.Map<Attendance>(existingAttendance);
+
+            _mapper.Map(attendance, data);
+
+            return _attendanceRepo.Update(data);
         }
 
         public bool DeleteAttendance(long id)
         {
-            return _attendanceRepo.Delete(id);
+            var existingAttendance = _attendanceRepo.Get(id);
+
+            return existingAttendance != null
+                ? _attendanceRepo.Delete(id)
+                : throw new Exception("Attendance not found");
         }
     }
 }

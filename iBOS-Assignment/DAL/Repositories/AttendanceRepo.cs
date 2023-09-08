@@ -6,7 +6,7 @@ using iBOS_Assignment.DAL.Models;
 
 namespace iBOS_Assignment.DAL.Repositories
 {
-    public class AttendanceRepo : IRepo<EmployeeAttendance, long, bool>
+    public class AttendanceRepo : IRepo<Attendance, long, bool>
     {
         private readonly ApplicationDbContext _context;
 
@@ -15,17 +15,17 @@ namespace iBOS_Assignment.DAL.Repositories
             _context = context;
         }
 
-        public List<EmployeeAttendance> Get()
+        public List<Attendance> Get()
         {
             return _context.EmployeeAttendances.ToList();
         }
 
-        public EmployeeAttendance Get(long id)
+        public Attendance Get(long id)
         {
             return _context.EmployeeAttendances.Find(id);
         }
 
-        public bool Add(EmployeeAttendance obj)
+        public bool Add(Attendance obj)
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
@@ -38,6 +38,7 @@ namespace iBOS_Assignment.DAL.Repositories
         public bool Delete(long id)
         {
             var attendanceToDelete = _context.EmployeeAttendances.Find(id);
+
             if (attendanceToDelete == null)
                 return false;
 
@@ -46,13 +47,14 @@ namespace iBOS_Assignment.DAL.Repositories
             return true;
         }
 
-        public bool Update(EmployeeAttendance obj)
+        public bool Update(Attendance obj)
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
 
             var existingAttendance = _context.EmployeeAttendances.Find(obj.Id);
-            if (existingAttendance == null)
+
+            if (existingAttendance == null) 
                 return false;
 
             existingAttendance.EmployeeId = obj.EmployeeId;

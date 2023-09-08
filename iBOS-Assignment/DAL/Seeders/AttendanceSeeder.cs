@@ -8,8 +8,8 @@ namespace iBOS_Assignment.DAL.Seeders
     {
         public static void SeedAttendance(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EmployeeAttendance>().HasData(
-                new EmployeeAttendance {
+            modelBuilder.Entity<Attendance>().HasData(
+                new Attendance {
                     Id = 1,
                     EmployeeId = 502030,
                     AttendanceDate = new DateTime(2023, 06, 24),
@@ -17,7 +17,7 @@ namespace iBOS_Assignment.DAL.Seeders
                     IsAbsent = false,
                     IsOffDay = false
                 },
-                new EmployeeAttendance {
+                new Attendance {
                     Id = 2,
                     EmployeeId = 502030,
                     AttendanceDate = new DateTime(2023, 06, 25),
@@ -25,7 +25,7 @@ namespace iBOS_Assignment.DAL.Seeders
                     IsAbsent = true,
                     IsOffDay = false
                 },
-                new EmployeeAttendance {
+                new Attendance {
                     Id = 3,
                     EmployeeId = 502031,
                     AttendanceDate = new DateTime(2023, 06, 25),
