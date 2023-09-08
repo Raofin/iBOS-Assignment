@@ -1,10 +1,8 @@
 # iBOS-Assignment
 
-### **Description**:
+This repository contains an Employee Management API built using C#, .NET Core, MSSQL, and Entity Framework Core.
 
-This repository contains an Employee Management API built using C#, .NET Core, MSSQL, and Entity Framework Core. The API provides a set of endpoints to manage and retrieve employee data, along with advanced features like employee hierarchy, salary analysis, attendance reports, and more.
-
-### **API Endpoints**:
+## **API Endpoints**:
 
 1. **Update Employee Name and Employee Code** (`PUT /api/Employees/UpdateNameAndCode/{id}`):
    - Allows you to update an employee's name and code.
