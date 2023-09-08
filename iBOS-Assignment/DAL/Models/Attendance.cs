@@ -20,10 +20,10 @@ namespace iBOS_Assignment.DAL.Models
         [Required]
         [Column(TypeName = "date")]
         [DefaultValue(typeof(DateTime), "GETDATE()")]
-        public DateTime AttendanceDate { get; set; } = DateTime.Now;
+        public DateTime AttendanceDate { get; set; } = DateTime.Now; // Default value is the current date.
 
         [DefaultValue(false)]
-        public bool IsPresent { get; set; } = false;
+        public bool IsPresent { get; set; } = false; // Default value is false.
 
         [DefaultValue(false)]
         public bool IsAbsent { get; set; } = false;

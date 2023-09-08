@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace iBOS_Assignment.BLL.Dtos
+﻿namespace iBOS_Assignment.BLL.Dtos
 {
     public class EmployeeDto
     {

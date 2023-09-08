@@ -1,12 +1,11 @@
 ﻿using iBOS_Assignment.BLL.Dtos;
 using iBOS_Assignment.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 
 namespace iBOS_Assignment.API.Controllers
 {
-    [Authorize]
+    [Authorize] // Specify that authorization is required to access this controller.
     [ApiController]
     [Route("api/tasks")]
     public class TasksController : ControllerBase
@@ -24,11 +23,11 @@ namespace iBOS_Assignment.API.Controllers
         [HttpPut("UpdateNameAndCode/{employeeId}")]
         public IActionResult UpdateNameAndCode(long employeeId, [FromBody] EmpNameAndCodeDto employee)
         {
-            EmployeeDto existingEmployee = _employeeService.Get(employeeId);
+            var existingEmployee = _employeeService.Get(employeeId);
 
             if (existingEmployee == null)
             {
-                return NotFound("Employee not found");
+                return NotFound("Employee not found"); // Return a 404 Not Found response if the employee doesn't exist.
             }
 
             // Update the EmployeeName and EmployeeCode properties
@@ -42,17 +41,18 @@ namespace iBOS_Assignment.API.Controllers
                 existingEmployee.EmployeeCode = employee.EmployeeCode;
             }
 
-            var updatedEmployee = _employeeService.Update(existingEmployee);
+            // Update the employee in the database.
+            _employeeService.Update(existingEmployee);
 
-            return Ok("Employee updated successfully");
+            return Ok("Employee updated successfully"); // Return a 200 OK response after updating the employee.
         }
-
 
         // GET: api/Employees/GetThirdHighestSalaryEmployee
         [HttpGet("GetThirdHighestSalaryEmployee")]
         public IActionResult GetThirdHighestSalaryEmployee()
         {
-            EmployeeDto thirdHighestSalaryEmployee = _employeeService.GetThirdHighestSalaryEmployee();
+            // Retrieve the employee with the third highest salary.
+            var thirdHighestSalaryEmployee = _employeeService.GetThirdHighestSalaryEmployee();
 
             if (thirdHighestSalaryEmployee == null)
             {
@@ -66,7 +66,8 @@ namespace iBOS_Assignment.API.Controllers
         [HttpGet("GetEmployeesMaxToMinSalaryWithNoAbsent")]
         public IActionResult GetEmployeesWithNoAbsentRecords()
         {
-            List<EmployeeDto> employeesWithNoAbsentRecords = _employeeService.GetEmployeesWithNoAbsentRecords();
+            // Retrieve employees with no absent records ordered by salary from max to min.
+            var employeesWithNoAbsentRecords = _employeeService.GetEmployeesWithNoAbsentRecords();
 
             if (employeesWithNoAbsentRecords == null || employeesWithNoAbsentRecords.Count == 0)
             {
@@ -80,6 +81,7 @@ namespace iBOS_Assignment.API.Controllers
         [HttpGet("MonthlyAttendanceReport")]
         public IActionResult GetMonthlyAttendanceReport(int year, int month)
         {
+            // Calculate the monthly attendance report for the specified year and month.
             var reportData = _attendanceService.CalculateMonthlyReport(year, month);
 
             return Ok(reportData);
@@ -89,7 +91,8 @@ namespace iBOS_Assignment.API.Controllers
         [HttpGet("GetHierarchy/{employeeId}")]
         public IActionResult GetHierarchy(long employeeId)
         {
-            List<EmployeeDto> hierarchy = _employeeService.GetHierarchyByEmployeeId(employeeId);
+            // Retrieve the hierarchy of employees based on the specified employeeId.
+            var hierarchy = _employeeService.GetHierarchyByEmployeeId(employeeId);
 
             if (hierarchy == null || hierarchy.Count == 0)
             {

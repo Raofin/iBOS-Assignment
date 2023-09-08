@@ -2,7 +2,7 @@
 
 namespace iBOS_Assignment.DAL.Interfaces
 {
-    public interface IRepo<TClass, TId, TResult>
+    public interface IRepo<TClass, in TId, out TResult>
     {
         List<TClass> Get();
 

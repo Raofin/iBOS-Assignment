@@ -1,7 +1,4 @@
 ﻿using iBOS_Assignment.DAL.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 using System;
 
 namespace iBOS_Assignment.BLL.Dtos

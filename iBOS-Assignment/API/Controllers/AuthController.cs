@@ -10,15 +10,18 @@ namespace iBOS_Assignment.API.Controllers
     {
         private readonly AuthService _authService;
 
+        // Constructor for the AuthController class, which injects an instance of AuthService.
         public AuthController(AuthService authService)
         {
             _authService = authService;
         }
 
-        [AllowAnonymous]
-        [HttpGet("GetToken")]
+        // Generate and return an authentication token.
+        [AllowAnonymous] // Allow access to this endpoint without authentication.
+        [HttpGet("GetToken")] // Specify the HTTP method and route for this action.
         public IActionResult Auth()
         {
+            // Call the AuthService to generate an authentication token.
             return Ok(_authService.Generate());
         }
     }

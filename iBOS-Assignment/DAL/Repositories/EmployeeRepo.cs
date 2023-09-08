@@ -50,8 +50,6 @@ namespace iBOS_Assignment.DAL.Repositories
             return hierarchy;
         }
 
-
-
         public List<Employee> Get()
         {
             return _context.Employees.ToList();

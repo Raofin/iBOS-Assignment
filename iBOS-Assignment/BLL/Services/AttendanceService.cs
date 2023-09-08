@@ -12,25 +12,25 @@ namespace iBOS_Assignment.BLL.Services
     {
         private readonly AttendanceRepo _attendanceRepo;
 
+        // Constructor for the AttendanceService class, which injects an instance of AttendanceRepo.
         public AttendanceService(AttendanceRepo attendanceRepo)
         {
             _attendanceRepo = attendanceRepo;
         }
 
+        // AutoMapper configuration to map between AttendanceDto and Attendance entities.
         private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg => {
             cfg.CreateMap<AttendanceDto, Attendance>();
             cfg.CreateMap<Attendance, AttendanceDto>();
         }));
 
+        // Calculates the monthly attendance report for a given year and month.
         public List<MonthlyAttendanceReportDto> CalculateMonthlyReport(int year, int month)
         {
-            // Implement logic to calculate the monthly attendance report
-            // This may involve querying attendance records, aggregating data, and performing calculations
-
-            // Example: Query attendance records for the specified month and year
+            // Retrieve attendance records for the specified year and month.
             var attendanceRecords = _attendanceRepo.GetMonthlyAttendanceReport(year, month);
 
-            // Example: Group and calculate attendance data by employee
+            // Group attendance records by employee and calculate the monthly report data.
             var reportData = attendanceRecords
                 .GroupBy(a => a.Employee)
                 .Select(group => new MonthlyAttendanceReportDto {
@@ -46,27 +46,21 @@ namespace iBOS_Assignment.BLL.Services
             return reportData;
         }
 
-        // Implement additional business logic methods if needed
-
         private decimal CalculateSalary(IGrouping<Employee, Attendance> group)
         {
-            // Implement logic to calculate the total calculated salary for an employee
-            // You can use information from attendance records and the employee's salary
-            // This is a simplified example; you should adapt it to your actual calculation logic
-
             decimal totalSalary = group.Key.EmployeeSalary;
-
-            // Adjust the totalSalary based on attendance data if needed
 
             return totalSalary;
         }
 
+        // Retrieves all attendance records and maps them to AttendanceDto objects.
         public List<AttendanceDto> Get()
         {
             var data = _attendanceRepo.Get();
             return _mapper.Map<List<AttendanceDto>>(data);
         }
 
+        // Retrieves an attendance record by its ID and maps it to an AttendanceDto object.
         public AttendanceDto Get(long id)
         {
             var data = _attendanceRepo.Get(id);
@@ -74,12 +68,14 @@ namespace iBOS_Assignment.BLL.Services
             return _mapper.Map<AttendanceDto>(data);
         }
 
+        // Adds a new attendance record based on the provided AttendanceDto.
         public bool AddAttendance(AttendanceDto attendance)
         {
             var employeeAttendance = _mapper.Map<Attendance>(attendance);
             return _attendanceRepo.Add(employeeAttendance);
         }
 
+        // Updates an existing attendance record based on the provided AttendanceDto.
         public bool UpdateAttendance(AttendanceDto attendance)
         {
             var existingAttendance = _attendanceRepo.Get(attendance.Id);
@@ -96,6 +92,7 @@ namespace iBOS_Assignment.BLL.Services
             return _attendanceRepo.Update(data);
         }
 
+        // Deletes an attendance record by its ID.
         public bool DeleteAttendance(long id)
         {
             var existingAttendance = _attendanceRepo.Get(id);

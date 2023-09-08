@@ -12,7 +12,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 
-
 namespace iBOS_Assignment
 {
     public class Startup
@@ -24,14 +23,16 @@ namespace iBOS_Assignment
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime, used to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
+            // Configure the DbContext to use SQLite with the specified connection string.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("iBOS")));
 
+            // Register repositories and services with dependency injection.
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<AttendanceRepo>();
 
@@ -39,21 +40,24 @@ namespace iBOS_Assignment
             services.AddScoped<AttendanceService>();
             services.AddScoped<AuthService>();
 
-            services.AddSwaggerGen(option =>
-            {
+            // Configure Swagger for API documentation.
+            services.AddSwaggerGen(option => {
                 option.SwaggerDoc("v1", new OpenApiInfo {
                     Title = "iBOS Assignment API",
                     Version = "v1"
                 });
 
+                // Add security definition for JWT Bearer token.
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                     In = ParameterLocation.Header,
-                    Description = "Please GET a auth token using `/api/GetToken` and paste it here.",
+                    Description = "Please GET an auth token using `/api/GetToken` and paste it here.",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
                     Scheme = "Bearer"
                 });
+
+                // Add security requirement for JWT Bearer token.
                 option.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -70,6 +74,7 @@ namespace iBOS_Assignment
                 });
             });
 
+            // Configure CORS policy to allow requests from any origin.
             services.AddCors(options => {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder
@@ -78,6 +83,7 @@ namespace iBOS_Assignment
                         .AllowAnyHeader());
             });
 
+            // Configure JWT authentication with options.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters {
@@ -95,6 +101,7 @@ namespace iBOS_Assignment
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Enable Swagger and Swagger UI for API documentation.
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "iBOS Assignment API");
@@ -105,6 +112,7 @@ namespace iBOS_Assignment
                 app.UseDeveloperExceptionPage();
             }
 
+            // Enable CORS for specified origin(s).
             app.UseCors("AllowSpecificOrigin");
 
             app.UseHttpsRedirection();

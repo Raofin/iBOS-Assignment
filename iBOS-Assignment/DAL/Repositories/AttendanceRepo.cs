@@ -11,18 +11,15 @@ namespace iBOS_Assignment.DAL.Repositories
     {
         private readonly ApplicationDbContext _context;
 
+        // Constructor for the AttendanceRepo class, which injects an instance of ApplicationDbContext.
         public AttendanceRepo(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // Retrieves a list of attendance records for a specific month and year.
         public List<Attendance> GetMonthlyAttendanceReport(int year, int month)
         {
-            // Implement logic to query attendance records for the specified year and month
-            // You'll need to filter and aggregate attendance records to generate the report
-            // This implementation will depend on your data model and business requirements
-
-            // Example: Query attendance data for the specified month and year
             var reportData = _context.EmployeeAttendances
                 .Include(a => a.Employee)
                 .Where(a => a.AttendanceDate.Year == year && a.AttendanceDate.Month == month)
@@ -72,6 +69,7 @@ namespace iBOS_Assignment.DAL.Repositories
             if (existingAttendance == null)
                 return false;
 
+            // Update the properties of the existing attendance record.
             existingAttendance.EmployeeId = obj.EmployeeId;
             existingAttendance.AttendanceDate = obj.AttendanceDate;
             existingAttendance.IsPresent = obj.IsPresent;

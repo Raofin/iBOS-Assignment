@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using AutoMapper;
 using iBOS_Assignment.BLL.Dtos;
-using iBOS_Assignment.DAL;
 using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
-using Microsoft.AspNetCore.Mvc;
 
 namespace iBOS_Assignment.BLL.Services
 {
@@ -18,12 +16,13 @@ namespace iBOS_Assignment.BLL.Services
             _employeeRepo = employeeRepo;
         }
 
-        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg =>
-        {
+        // AutoMapper configuration to map between EmployeeDto and Employee entities.
+        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg => {
             cfg.CreateMap<EmployeeDto, Employee>();
             cfg.CreateMap<Employee, EmployeeDto>();
         }));
 
+        // Retrieves the employee with the third-highest salary.
         public EmployeeDto GetThirdHighestSalaryEmployee()
         {
             var employee = _employeeRepo.GetEmployeeWithThirdHighestSalary();
@@ -36,6 +35,7 @@ namespace iBOS_Assignment.BLL.Services
             return _mapper.Map<EmployeeDto>(employee);
         }
 
+        // Retrieves a list of employees with no absent records.
         public List<EmployeeDto> GetEmployeesWithNoAbsentRecords()
         {
             var employees = _employeeRepo.GetEmployeesWithNoAbsentRecords();
@@ -44,11 +44,11 @@ namespace iBOS_Assignment.BLL.Services
             return _mapper.Map<List<EmployeeDto>>(employees);
         }
 
+        // Retrieves the hierarchy of employees based on the specified employeeId.
         public List<EmployeeDto> GetHierarchyByEmployeeId(long employeeId)
         {
             var hierarchy = _employeeRepo.GetHierarchyByEmployeeId(employeeId);
 
-            // Map the Employee entities to EmployeeDto objects if necessary
             return _mapper.Map<List<EmployeeDto>>(hierarchy);
         }
 
