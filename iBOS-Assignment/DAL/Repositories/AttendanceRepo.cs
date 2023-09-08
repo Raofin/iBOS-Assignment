@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using iBOS_Assignment.DAL.Interfaces;
 using iBOS_Assignment.DAL.Models;
 
@@ -6,29 +8,61 @@ namespace iBOS_Assignment.DAL.Repositories
 {
     public class AttendanceRepo : IRepo<EmployeeAttendance, long, bool>
     {
-        public bool Add(EmployeeAttendance obj)
-        {
-            throw new System.NotImplementedException();
-        }
+        private readonly ApplicationDbContext _context;
 
-        public bool Delete(long id)
+        public AttendanceRepo(ApplicationDbContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
         }
 
         public List<EmployeeAttendance> Get()
         {
-            throw new System.NotImplementedException();
+            return _context.EmployeeAttendances.ToList();
         }
 
         public EmployeeAttendance Get(long id)
         {
-            throw new System.NotImplementedException();
+            return _context.EmployeeAttendances.Find(id);
+        }
+
+        public bool Add(EmployeeAttendance obj)
+        {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
+            _context.EmployeeAttendances.Add(obj);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool Delete(long id)
+        {
+            var attendanceToDelete = _context.EmployeeAttendances.Find(id);
+            if (attendanceToDelete == null)
+                return false;
+
+            _context.EmployeeAttendances.Remove(attendanceToDelete);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Update(EmployeeAttendance obj)
         {
-            throw new System.NotImplementedException();
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
+            var existingAttendance = _context.EmployeeAttendances.Find(obj.Id);
+            if (existingAttendance == null)
+                return false;
+
+            existingAttendance.EmployeeId = obj.EmployeeId;
+            existingAttendance.AttendanceDate = obj.AttendanceDate;
+            existingAttendance.IsPresent = obj.IsPresent;
+            existingAttendance.IsAbsent = obj.IsAbsent;
+            existingAttendance.IsOffDay = obj.IsOffDay;
+
+            _context.SaveChanges();
+            return true;
         }
     }
 }
