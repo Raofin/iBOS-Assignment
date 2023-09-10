@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iBOS_Assignment.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace iBOS_Assignment.API.Controllers
 
         // Generate and return an authentication token.
         [AllowAnonymous] // Allow access to this endpoint without authentication.
-        [HttpGet("GetToken")] // Specify the HTTP method and route for this action.
+        [HttpGet("get-token")] // Specify the HTTP method and route for this action.
         public IActionResult Auth()
         {
             // Call the AuthService to generate an authentication token.

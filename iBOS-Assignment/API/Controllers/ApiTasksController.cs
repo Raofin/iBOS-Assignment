@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using iBOS_Assignment.BLL.Dtos;
+using System;
 
 namespace iBOS_Assignment.API.Controllers
 {
@@ -35,7 +36,7 @@ namespace iBOS_Assignment.API.Controllers
                 // Check if the new EmployeeCode already exists.
                 if (_employeeService.EmployeeCodeExists(employee.EmployeeCode))
                 {
-                    return BadRequest("EmployeeCode already exists"); // Return a 400 Bad Request response.
+                    return BadRequest("EmployeeCode must be unique"); // Return a 400 Bad Request response.
                 }
 
                 // Update the EmployeeCode property.
@@ -78,20 +79,26 @@ namespace iBOS_Assignment.API.Controllers
 
             if (employeesWithNoAbsentRecords == null || employeesWithNoAbsentRecords.Count == 0)
             {
-                return NotFound();
+                return NotFound("No employees found.");
             }
 
             return Ok(employeesWithNoAbsentRecords);
         }
 
-        // GET: api/Attendance/MonthlyReport?year=2023&month=9
+        // GET: api/Attendance/MonthlyReport?year={year}&month={month}
         [HttpGet("MonthlyAttendanceReport")]
         public IActionResult GetMonthlyAttendanceReport(int year, int month)
         {
+            // Validate the year and month.
+            if (year < 1 || year > DateTime.Now.Year || month < 1 || month > 12)
+                return BadRequest("Invalid year or month.");
+
             // Calculate the monthly attendance report for the specified year and month.
             var reportData = _attendanceService.CalculateMonthlyReport(year, month);
 
-            return Ok(reportData);
+            return reportData == null
+                ? (IActionResult)NotFound("No data matched with the given year and month.")
+                : Ok(reportData);
         }
 
         // GET: api/Employees/GetHierarchy/{employeeId}
@@ -102,9 +109,7 @@ namespace iBOS_Assignment.API.Controllers
             var hierarchy = _employeeService.GetHierarchyByEmployeeId(employeeId);
 
             if (hierarchy == null || hierarchy.Count == 0)
-            {
-                return NotFound();
-            }
+                return NotFound("No employees found.");
 
             return Ok(hierarchy);
         }

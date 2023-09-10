@@ -79,9 +79,7 @@ namespace iBOS_Assignment.BLL.Services
             var existingAttendance = _attendanceRepo.Get(attendance.Id);
 
             if (existingAttendance == null)
-            {
                 throw new Exception("Attendance not found");
-            }
 
             var data = _mapper.Map<Attendance>(existingAttendance);
 
@@ -95,9 +93,7 @@ namespace iBOS_Assignment.BLL.Services
         {
             var existingAttendance = _attendanceRepo.Get(id);
 
-            return existingAttendance != null
-                ? _attendanceRepo.Delete(id)
-                : throw new Exception("Attendance not found");
+            return existingAttendance != null && _attendanceRepo.Delete(id);
         }
     }
 }

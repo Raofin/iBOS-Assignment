@@ -73,14 +73,20 @@ namespace iBOS_Assignment.BLL.Services
                 throw new Exception("Employee not found");
             }
 
+            // Convert to uppercase since all codes are in uppercase in the database
+            var newEmployeeCode = employee.EmployeeCode?.ToUpper();
+
             // Check if the new EmployeeCode is different from the existing one
-            if (existingEmployee.EmployeeCode != employee.EmployeeCode)
+            if (existingEmployee.EmployeeCode != newEmployeeCode)
             {
                 // If different, check if the new EmployeeCode is unique
-                if (_employeeRepo.EmployeeCodeExists(employee.EmployeeCode))
+                if (_employeeRepo.EmployeeCodeExists(newEmployeeCode))
                 {
                     throw new Exception("EmployeeCode must be unique");
                 }
+
+                // Update the EmployeeCode in uppercase
+                existingEmployee.EmployeeCode = newEmployeeCode;
             }
 
             // Update other properties
@@ -109,6 +115,9 @@ namespace iBOS_Assignment.BLL.Services
             {
                 throw new Exception("EmployeeName and EmployeeCode are required");
             }
+
+            // Convert the EmployeeCode to uppercase
+            employee.EmployeeCode = employee.EmployeeCode?.ToUpper();
 
             // Check if the EmployeeCode is unique
             if (_employeeRepo.EmployeeCodeExists(employee.EmployeeCode))

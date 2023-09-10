@@ -79,8 +79,6 @@ namespace iBOS_Assignment.DAL.Repositories
                 currentEmployee = _context.Employees.FirstOrDefault(e => e.EmployeeId == currentEmployee.SupervisorId);
             }
 
-            hierarchy.Reverse(); // Reverse the hierarchy to start from the root supervisor
-
             return hierarchy;
         }
 
