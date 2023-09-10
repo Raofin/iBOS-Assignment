@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using iBOS_Assignment.BLL.Interfaces;
 using Microsoft.OpenApi.Models;
+using iBOS_Assignment.BLL.MappingProfiles;
 
 namespace iBOS_Assignment
 {
@@ -33,6 +34,8 @@ namespace iBOS_Assignment
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("iBOS")));
 
+            services.AddScoped<ApplicationDbContext>();
+
             // Register repositories and services with dependency injection.
             services.AddScoped<EmployeeRepo>();
             services.AddScoped<AttendanceRepo>();
@@ -40,6 +43,11 @@ namespace iBOS_Assignment
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<DataAccessFactory>();
+
+
+            services.AddAutoMapper(typeof(EmployeeMappingProfile), typeof(AttendanceMappingProfile));
 
             // Configure Swagger for API documentation.
             services.AddSwaggerGen(option => {

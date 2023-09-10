@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace iBOS_Assignment.DAL.Repositories
 {
-    public class AttendanceRepo : IRepo<Attendance, long, bool>
+    public class AttendanceRepo : IAttendanceRepo
     {
         private readonly ApplicationDbContext _context;
 

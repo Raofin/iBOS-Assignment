@@ -6,7 +6,7 @@ using iBOS_Assignment.DAL.Models;
 
 namespace iBOS_Assignment.DAL.Repositories
 {
-    public class EmployeeRepo : IRepo<Employee, long, bool>
+    public class EmployeeRepo : IEmployeeRepository
     {
         private readonly ApplicationDbContext _context;
 

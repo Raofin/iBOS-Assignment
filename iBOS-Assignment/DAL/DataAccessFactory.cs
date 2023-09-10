@@ -1,24 +1,27 @@
 ﻿using iBOS_Assignment.DAL.Interfaces;
-using iBOS_Assignment.DAL.Models;
 using iBOS_Assignment.DAL.Repositories;
 
 namespace iBOS_Assignment.DAL
 {
+    // This class is responsible for creating repository instances
     public class DataAccessFactory
     {
-        private static ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        private DataAccessFactory(ApplicationDbContext context)
+        // Constructor to inject the application's database context
+        public DataAccessFactory(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public static IRepo<Employee, long, bool> EmployeeDataAccess()
+        // Create and return an instance of the Employee repository
+        public IEmployeeRepository EmployeeRepository()
         {
             return new EmployeeRepo(_context);
         }
 
-        public static IRepo<Attendance, long, bool> AttendanceDataAccess()
+        // Create and return an instance of the Attendance repository
+        public IAttendanceRepo AttendanceRepository()
         {
             return new AttendanceRepo(_context);
         }

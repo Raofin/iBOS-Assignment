@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using iBOS_Assignment.DAL.Models;
-using iBOS_Assignment.DAL.Repositories;
 using AutoMapper;
 using System.Linq;
 using iBOS_Assignment.BLL.Interfaces;
 using iBOS_Assignment.API.Dtos;
+using iBOS_Assignment.DAL.Interfaces;
+using iBOS_Assignment.DAL;
 
 namespace iBOS_Assignment.BLL.Services
 {
+    // This service class provides operations related to employee attendance records.
     public class AttendanceService : IAttendanceService
     {
-        private readonly AttendanceRepo _attendanceRepo;
+        private readonly IAttendanceRepo _attendanceRepo;
+        private readonly IMapper _mapper;
 
-        // Constructor for the AttendanceService class, which injects an instance of AttendanceRepo.
-        public AttendanceService(AttendanceRepo attendanceRepo)
+        public AttendanceService(DataAccessFactory dataAccessFactory, IMapper mapper)
         {
-            _attendanceRepo = attendanceRepo;
+            _attendanceRepo = dataAccessFactory.AttendanceRepository();
+            _mapper = mapper;
         }
-
-        // AutoMapper configuration to map between AttendanceDto and Attendance entities.
-        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg => {
-            cfg.CreateMap<AttendanceDto, Attendance>();
-            cfg.CreateMap<Attendance, AttendanceDto>();
-        }));
 
         // Calculates the monthly attendance report for a given year and month.
         public List<MonthlyAttendanceReportDto> CalculateMonthlyReport(int year, int month)

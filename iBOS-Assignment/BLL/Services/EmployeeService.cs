@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using AutoMapper;
 using iBOS_Assignment.API.Dtos;
 using iBOS_Assignment.BLL.Interfaces;
+using iBOS_Assignment.DAL;
+using iBOS_Assignment.DAL.Interfaces;
 using iBOS_Assignment.DAL.Models;
-using iBOS_Assignment.DAL.Repositories;
 
 namespace iBOS_Assignment.BLL.Services
 {
+    // This service class provides operations related to employees.
     public class EmployeeService : IEmployeeService
     {
-        private readonly EmployeeRepo _employeeRepo;
+        private readonly IEmployeeRepository _employeeRepo;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(EmployeeRepo employeeRepo)
+        public EmployeeService(DataAccessFactory dataAccessFactory, IMapper mapper)
         {
-            _employeeRepo = employeeRepo;
+            _employeeRepo = dataAccessFactory.EmployeeRepository();
+            _mapper = mapper;
         }
-
-        // AutoMapper configuration to map between EmployeeDto and Employee entities.
-        private static readonly IMapper _mapper = new Mapper(new MapperConfiguration(cfg => {
-            cfg.CreateMap<EmployeeDto, Employee>();
-            cfg.CreateMap<Employee, EmployeeDto>();
-        }));
 
         // Retrieves the employee with the third-highest salary.
         public EmployeeDto GetThirdHighestSalaryEmployee()
         {
             var employee = _employeeRepo.GetEmployeeWithThirdHighestSalary();
+
 
             if (employee == null)
             {
