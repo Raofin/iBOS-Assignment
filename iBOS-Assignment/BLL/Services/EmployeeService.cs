@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using iBOS_Assignment.API.Dtos;
+using iBOS_Assignment.BLL.Dtos;
 using iBOS_Assignment.BLL.Interfaces;
 using iBOS_Assignment.DAL;
 using iBOS_Assignment.DAL.Interfaces;
@@ -124,6 +124,11 @@ namespace iBOS_Assignment.BLL.Services
         public bool Exists(long id)
         {
             return _employeeRepo.Get(id) != null;
+        }
+
+        public bool EmployeeCodeExists(string employeeCode)
+        {
+            return _employeeRepo.EmployeeCodeExists(employeeCode);
         }
     }
 }

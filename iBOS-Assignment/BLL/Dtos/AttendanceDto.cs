@@ -1,7 +1,7 @@
 ﻿using iBOS_Assignment.DAL.Models;
 using System;
 
-namespace iBOS_Assignment.API.Dtos
+namespace iBOS_Assignment.BLL.Dtos
 {
     public class AttendanceDto
     {

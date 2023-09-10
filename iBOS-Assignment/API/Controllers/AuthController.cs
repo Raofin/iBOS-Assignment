@@ -1,7 +1,6 @@
 ﻿using iBOS_Assignment.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using iBOS_Assignment.BLL.Services;
 
 namespace iBOS_Assignment.API.Controllers
 {

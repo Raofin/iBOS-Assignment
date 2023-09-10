@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace iBOS_Assignment.DAL.SQLite.Migrations
+namespace iBOS_Assignment.Migrations
 {
-    public partial class initSQLite : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,8 @@ namespace iBOS_Assignment.DAL.SQLite.Migrations
                 {
                     EmployeeId = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    EmployeeName = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    EmployeeCode = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    EmployeeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EmployeeCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     EmployeeSalary = table.Column<int>(nullable: false),
                     SupervisorId = table.Column<long>(nullable: false)
                 },

@@ -14,7 +14,7 @@ using iBOS_Assignment.BLL.Interfaces;
 using Microsoft.OpenApi.Models;
 using iBOS_Assignment.BLL.MappingProfiles;
 
-namespace iBOS_Assignment
+namespace iBOS_Assignment.API
 {
     public class Startup
     {
@@ -46,18 +46,20 @@ namespace iBOS_Assignment
 
             services.AddScoped<DataAccessFactory>();
 
-
             services.AddAutoMapper(typeof(EmployeeMappingProfile), typeof(AttendanceMappingProfile));
 
             // Configure Swagger for API documentation.
-            services.AddSwaggerGen(option => {
-                option.SwaggerDoc("v1", new OpenApiInfo {
+            services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo
+                {
                     Title = "iBOS Assignment API",
                     Version = "v1"
                 });
 
                 // Add security definition for JWT Bearer token.
-                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
                     In = ParameterLocation.Header,
                     Description = "Please GET an auth token using `/api/GetToken` and paste it here.",
                     Name = "Authorization",
@@ -84,7 +86,8 @@ namespace iBOS_Assignment
             });
 
             // Configure CORS policy to allow requests from any origin.
-            services.AddCors(options => {
+            services.AddCors(options =>
+            {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder
                         .WithOrigins("*")
@@ -94,8 +97,10 @@ namespace iBOS_Assignment
 
             // Configure JWT authentication with options.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
-                    options.TokenValidationParameters = new TokenValidationParameters {
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
@@ -112,7 +117,8 @@ namespace iBOS_Assignment
         {
             // Enable Swagger and Swagger UI for API documentation.
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "iBOS Assignment API");
             });
 
@@ -132,7 +138,8 @@ namespace iBOS_Assignment
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
             });
         }

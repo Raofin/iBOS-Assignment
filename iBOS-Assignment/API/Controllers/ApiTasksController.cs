@@ -1,20 +1,19 @@
 ﻿using iBOS_Assignment.BLL.Interfaces;
-using iBOS_Assignment.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using iBOS_Assignment.API.Dtos;
+using iBOS_Assignment.BLL.Dtos;
 
 namespace iBOS_Assignment.API.Controllers
 {
     [Authorize] // Specify that authorization is required to access this controller.
     [ApiController]
     [Route("api/tasks")]
-    public class TasksController : ControllerBase
+    public class ApiTasksController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
         private readonly IAttendanceService _attendanceService;
 
-        public TasksController(IEmployeeService employeeService, IAttendanceService attendanceService)
+        public ApiTasksController(IEmployeeService employeeService, IAttendanceService attendanceService)
         {
             _attendanceService = attendanceService;
             _employeeService = employeeService;
@@ -31,15 +30,22 @@ namespace iBOS_Assignment.API.Controllers
                 return NotFound("Employee not found"); // Return a 404 Not Found response if the employee doesn't exist.
             }
 
-            // Update the EmployeeName and EmployeeCode properties
-            if (!string.IsNullOrEmpty(employee.EmployeeName))
-            {
-                existingEmployee.EmployeeName = employee.EmployeeName;
-            }
-
             if (!string.IsNullOrEmpty(employee.EmployeeCode))
             {
+                // Check if the new EmployeeCode already exists.
+                if (_employeeService.EmployeeCodeExists(employee.EmployeeCode))
+                {
+                    return BadRequest("EmployeeCode already exists"); // Return a 400 Bad Request response.
+                }
+
+                // Update the EmployeeCode property.
                 existingEmployee.EmployeeCode = employee.EmployeeCode;
+            }
+
+            if (!string.IsNullOrEmpty(employee.EmployeeName))
+            {
+                // Update the EmployeeName property.
+                existingEmployee.EmployeeName = employee.EmployeeName;
             }
 
             // Update the employee in the database.

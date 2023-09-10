@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using iBOS_Assignment.API.Dtos;
+using iBOS_Assignment.BLL.Dtos;
 
 namespace iBOS_Assignment.BLL.Interfaces
 {
@@ -22,5 +22,7 @@ namespace iBOS_Assignment.BLL.Interfaces
         bool Create(EmployeeDto employeeDto);
 
         bool Exists(long id);
+
+        bool EmployeeCodeExists(string employeeCode);
     }
 }

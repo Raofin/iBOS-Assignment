@@ -11,7 +11,6 @@ namespace iBOS_Assignment.DAL.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        // Constructor for the AttendanceRepo class, which injects an instance of ApplicationDbContext.
         public AttendanceRepo(ApplicationDbContext context)
         {
             _context = context;
@@ -20,12 +19,10 @@ namespace iBOS_Assignment.DAL.Repositories
         // Retrieves a list of attendance records for a specific month and year.
         public List<Attendance> GetMonthlyAttendanceReport(int year, int month)
         {
-            var reportData = _context.EmployeeAttendances
+            return _context.EmployeeAttendances
                 .Include(a => a.Employee)
                 .Where(a => a.AttendanceDate.Year == year && a.AttendanceDate.Month == month)
                 .ToList();
-
-            return reportData;
         }
 
         public List<Attendance> Get()
@@ -38,14 +35,13 @@ namespace iBOS_Assignment.DAL.Repositories
             return _context.EmployeeAttendances.Find(id);
         }
 
-        public bool Add(Attendance obj)
+        public bool Add(Attendance attendance)
         {
-            if (obj == null)
-                throw new ArgumentNullException(nameof(obj));
+            if (attendance == null)
+                throw new ArgumentNullException(nameof(attendance));
 
-            _context.EmployeeAttendances.Add(obj);
-            _context.SaveChanges();
-            return true;
+            _context.EmployeeAttendances.Add(attendance);
+            return _context.SaveChanges() > 0;
         }
 
         public bool Delete(long id)
@@ -55,29 +51,27 @@ namespace iBOS_Assignment.DAL.Repositories
                 return false;
 
             _context.EmployeeAttendances.Remove(attendanceToDelete);
-            _context.SaveChanges();
-            return true;
+            return _context.SaveChanges() > 0;
         }
 
-        public bool Update(Attendance obj)
+        public bool Update(Attendance attendance)
         {
-            if (obj == null)
-                throw new ArgumentNullException(nameof(obj));
+            if (attendance == null)
+                throw new ArgumentNullException(nameof(attendance));
 
-            var existingAttendance = _context.EmployeeAttendances.Find(obj.Id);
+            var existingAttendance = _context.EmployeeAttendances.Find(attendance.Id);
 
             if (existingAttendance == null)
                 return false;
 
-            // Update the properties of the existing attendance record.
-            existingAttendance.EmployeeId = obj.EmployeeId;
-            existingAttendance.AttendanceDate = obj.AttendanceDate;
-            existingAttendance.IsPresent = obj.IsPresent;
-            existingAttendance.IsAbsent = obj.IsAbsent;
-            existingAttendance.IsOffDay = obj.IsOffDay;
+            // Update the properties of the existing attendance record
+            existingAttendance.EmployeeId = attendance.EmployeeId;
+            existingAttendance.AttendanceDate = attendance.AttendanceDate;
+            existingAttendance.IsPresent = attendance.IsPresent;
+            existingAttendance.IsAbsent = attendance.IsAbsent;
+            existingAttendance.IsOffDay = attendance.IsOffDay;
 
-            _context.SaveChanges();
-            return true;
+            return _context.SaveChanges() > 0;
         }
     }
 }

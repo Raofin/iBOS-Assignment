@@ -4,9 +4,9 @@ using iBOS_Assignment.DAL.Models;
 using AutoMapper;
 using System.Linq;
 using iBOS_Assignment.BLL.Interfaces;
-using iBOS_Assignment.API.Dtos;
 using iBOS_Assignment.DAL.Interfaces;
 using iBOS_Assignment.DAL;
+using iBOS_Assignment.BLL.Dtos;
 
 namespace iBOS_Assignment.BLL.Services
 {
@@ -37,7 +37,7 @@ namespace iBOS_Assignment.BLL.Services
                     TotalCalculatedSalary = CalculateSalary(group),
                     TotalPresent = group.Count(a => a.IsPresent),
                     TotalAbsent = group.Count(a => a.IsAbsent),
-                    TotalOffday = group.Count(a => a.IsOffDay)
+                    TotalOffDay = group.Count(a => a.IsOffDay)
                 })
                 .ToList();
 
