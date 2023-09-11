@@ -8,17 +8,17 @@ An ASP.NET Core API project developed with C#, .NET Core, MSSQL, and Entity Fram
 <img src="/Screenshot.png">
 
 ## Implemented Concepts
-✔️ **JWT Token:** JWT token authentication for secure access to the APIs.
+✔️ [**JWT Token:**](https://github.com/Raofin/iBOS-Assignment/blob/6f45749eca339f515831bd1e04b27ae3aff94b5f/iBOS-Assignment/API/Startup.cs#L99-L112) JWT token authentication for secure access to the APIs.
 
-✔️ **SQLite:** SQLite as the database storage.
+✔️ [**SQLite:**](https://github.com/Raofin/iBOS-Assignment/blob/6f45749eca339f515831bd1e04b27ae3aff94b5f/iBOS-Assignment/API/Startup.cs#L34-L35) SQLite as the database storage.
 
-✔️ **Repository Pattern:** Repository pattern, providing a structured approach to data access and manipulation.
+✔️ [**Repository Pattern:**](https://github.com/Raofin/iBOS-Assignment/tree/master/iBOS-Assignment/DAL/Repositories) Repository pattern, providing a structured approach to data access and manipulation.
 
 ✔️ **SOLID Principles:** The SOLID architecture principles to enhance code maintainability, extensibility, and reusability.
 
-✔️ **Model Validation** Perfect model validations to ensure the integrity and validity of data inputs.
+✔️ [**Model Validation**](https://github.com/Raofin/iBOS-Assignment/tree/master/iBOS-Assignment/DAL/Models) Perfect model validations to ensure the integrity and validity of data inputs.
 
-## **API Endpoints**
+## [**API Endpoints**](https://github.com/Raofin/iBOS-Assignment/blob/master/iBOS-Assignment/API/Controllers/ApiTasksController.cs)
 
 - **API#01. Update Employee Name and Employee Code**
    - Allows to update an employee's name and code.
